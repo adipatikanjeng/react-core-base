@@ -1,0 +1,6 @@
+{
+  "projects": {
+    "development": "core-app-project",
+    "default": "core-app-project"
+  }
+}
