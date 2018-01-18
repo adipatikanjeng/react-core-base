@@ -1,23 +1,36 @@
 import React from 'react'
-import {Form, Icon, Input, Button, Checkbox} from 'antd';
-const FormItem = Form.Item;
+import {Form, Icon, Input, Button, Checkbox, Spin} from 'antd'
+import { connect } from 'react-redux'
+import {login} from './../../actions/login'
+const FormItem = Form.Item
+
+const antIcon = <Icon type='loading' style={{ fontSize: 14 }} spin />
 
 class NormalLoginForm extends React.Component {
-  handleSubmit = (e) => {
-    e.preventDefault();
+  constructor (props) {
+    super(props)
+    this.state = {}
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit (e) {
+    e.preventDefault()
     this
       .props
       .form
       .validateFields((err, values) => {
         if (!err) {
-          console.log('Received values of form: ', values);
+          console.log('Received values of form: ', values)
+          this.props.login(values.email, values.password, values.remember)
         }
-      });
+      })
   }
-  render() {
-    const {getFieldDecorator} = this.props.form;
+  render () {
+    const {getFieldDecorator} = this.props.form
+
+    let {isLoginPending, loginError} = this.props
     return (
-      <Form onSubmit={this.handleSubmit} className="login-form">
+      <Form onSubmit={this.handleSubmit} className='login-form'>
         <FormItem>
           {getFieldDecorator('email', {
             rules: [
@@ -28,8 +41,8 @@ class NormalLoginForm extends React.Component {
             ]
           })(
             <Input
-              prefix={< Icon type = "email" style = {{ color: 'rgba(0,0,0,.25)' }}/>}
-              placeholder="Email"/>
+              prefix={<Icon type='email' style={{ color: 'rgba(0,0,0,.25)' }} />}
+              placeholder='Email' />
           )}
         </FormItem>
         <FormItem>
@@ -42,9 +55,9 @@ class NormalLoginForm extends React.Component {
             ]
           })(
             <Input
-              prefix={< Icon type = "lock" style = {{ color: 'rgba(0,0,0,.25)' }}/>}
-              type="password"
-              placeholder="Password"/>
+              prefix={<Icon type='lock' style={{ color: 'rgba(0,0,0,.25)' }} />}
+              type='password'
+              placeholder='Password' />
           )}
         </FormItem>
         <FormItem>
@@ -54,38 +67,54 @@ class NormalLoginForm extends React.Component {
           })(
             <Checkbox>Remember me</Checkbox>
           )}
-          <a className="login-form-forgot" href="">Forgot password</a>
+          <a className='login-form-forgot' href=''>Forgot password</a>
 
-        
-        <Button
-          type="primary"
-          htmlType="submit"
-          style={{
-          width: '100%'
-        }}>
-          <Icon type="login"/>Login
-        </Button>        
-        <Button 
-        type="primary" 
-        style={{
-          width: '100%'
-        }}>
-          <Icon type="facebook" />Facebook
+          <Button
+            type='primary'
+            htmlType='submit'
+            style={{
+              width: '100%'
+            }}>
+            {isLoginPending ? (
+              <Spin indicator={antIcon} />
+            ) : <Icon type='login' /> }
+          </Button>
+          { loginError && <div>{loginError.message}</div> }
+          <Button
+            type='primary'
+            style={{
+              width: '100%'
+            }}>
+            <Icon type='facebook' />Facebook
         </Button>
-        <Button 
-        type="primary" 
-        style={{
-          width: '100%'
-        }}>
-          <Icon type="google" />Google
+          <Button
+            type='primary'
+            style={{
+              width: '100%'
+            }}>
+            <Icon type='google' />Google
         </Button>
-        Or <a href="/register">register now!</a>
-        </FormItem>        
+        Or <a href='/register'>register now!</a>
+        </FormItem>
       </Form>
-    );
+    )
   }
 }
 
-const WrappedNormalLoginForm = Form.create()(NormalLoginForm);
+const mapStateToProps = (state) => {
+  return {
+    isLoginPending: state.login.isLoginPending,
+    isLoginSuccess: state.login.isLoginSuccess,
+    loginError: state.login.loginError
+  }
+}
 
-export default WrappedNormalLoginForm
+const mapDispatchToProps = (dispatch) => {
+  return {
+    login: (email, password, remember) => dispatch(login(email, password, remember))
+  }
+}
+
+const WrappedNormalLoginForm = Form.create()(NormalLoginForm)
+
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedNormalLoginForm)

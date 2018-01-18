@@ -3,14 +3,16 @@ import ReactDOM from 'react-dom'
 import './index.less'
 import App from './App'
 import registerServiceWorker from './registerServiceWorker'
+import { Provider } from 'react-redux'
 import { LocaleProvider } from 'antd'
 import enUS from 'antd/lib/locale-provider/en_US'
-import { config } from 'dotenv'
-config()
+import store from './store'
 
 ReactDOM.render(
-  <LocaleProvider locale={enUS}>
-    <App />
-  </LocaleProvider>,
+  <Provider store={store}>
+    <LocaleProvider locale={enUS}>
+      <App />
+    </LocaleProvider>
+  </Provider>,
 document.getElementById('root'))
 registerServiceWorker()

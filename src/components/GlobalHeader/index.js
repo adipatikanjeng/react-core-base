@@ -6,7 +6,6 @@ const {Header} = Layout
 
 class GlobalHeader extends React.Component {
   render () {
-    document.title = this.props.title + ' | React App'
     const {title, currentUser, linkTo, toggle, collapsed} = this.props
 
     const menu = (
@@ -46,7 +45,7 @@ class GlobalHeader extends React.Component {
           {currentUser.name ? (
             <Dropdown overlay={menu}>
               <span className='action account'>
-                <Avatar size='small' className='avatar' src={currentUser.avatar} />
+                <Avatar size='small' className='avatar' src={'images/' + currentUser.avatar} />
                 {currentUser.name}
               </span>
             </Dropdown>

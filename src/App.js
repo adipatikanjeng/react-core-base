@@ -3,6 +3,7 @@ import { Router, browserHistory, Route } from 'react-router'
 import NotFound from './routes/Exception/404'
 import Loader from './components/Loader'
 import Loadable from 'react-loadable'
+// import Auth from '../src/auth'
 import './App.less'
 
 function LoadableComponent (Component) {

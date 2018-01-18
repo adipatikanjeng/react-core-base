@@ -1,19 +1,21 @@
-import React from 'react';
+import React from 'react'
 import PropTypes from 'prop-types'
-import {Layout} from 'antd';
-import './BasicLayout.less';
-import './header.less';
+import {Layout} from 'antd'
+import './BasicLayout.less'
+import './header.less'
 import LeftSide from './../components/LeftSide'
 import GlobalHeader from './../components/GlobalHeader'
-import {browserHistory} from 'react-router';
-const {Content, Footer} = Layout;
+import {browserHistory} from 'react-router'
+import axios from 'axios'
+const {Content, Footer} = Layout
 
 class BasicLayout extends React.Component {
-  constructor(props) {
-    super(props);
+  constructor (props) {
+    super(props)
     this.state = {
       selectedKeys: [],
-      collapsed: false
+      collapsed: false,
+      currentUser: {}
     }
   }
 
@@ -26,25 +28,37 @@ class BasicLayout extends React.Component {
     this.setState({collapsed});
   }
 
-  toggle = () => {
-    console.log(!this.state.collapsed)
+  toggle = () => {    
     this.setState({
       collapsed: !this.state.collapsed
     });
   }
 
-  linkTo(item) {
-    browserHistory.push(item.key);
+  componentDidMount () {   
+    let here = this
+    axios.get('https://core-app-project.firebaseio.com/users/heriyadi.json', {
+      // params: {
+      //   access_token: AccessToken
+      // }
+    })
+    .then(function (response) {
+      here.setState({
+        currentUser: response.data
+      })
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
-  render() {
-    document.title = this.props.title + ' | React App'
-    const {children, title} = this.props
-    const currentUser = {
-      name: 'Herry Heriyadi',
-      avatar: 'images/avatar.jpg'
-    }
+  linkTo (item) {
+    browserHistory.push(item.key)
+  }
 
+  render () {
+    document.title = this.props.title + ' | Core App'
+    const {children, title} = this.props    
+    
     return (
       <Layout>
         <LeftSide
@@ -54,22 +68,22 @@ class BasicLayout extends React.Component {
           />
         <Layout>
           <GlobalHeader
-           title={title}
-           currentUser={currentUser}
-           linkTo={this.linkTo}
-           toggle={this.toggle}
-           collapsed={this.state.collapsed}
+            title={title}
+            currentUser={this.state.currentUser}
+            linkTo={this.linkTo}
+            toggle={this.toggle}
+            collapsed={this.state.collapsed}
            />
           <Content
             style={{
-            margin: '24px 16px',
-            padding: 24,
-            background: '#fff',
-            minHeight:400
-          }}>
-          <div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
-            {children}
-          </div>
+              margin: '24px 16px',
+              padding: 24,
+              background: '#fff',
+              minHeight: 400
+            }}>
+            <div style={{ padding: 24, background: '#fff', textAlign: 'center' }}>
+              {children}
+            </div>
           </Content>
           <Footer style={{
             textAlign: 'center'
@@ -78,7 +92,7 @@ class BasicLayout extends React.Component {
           </Footer>
         </Layout>
       </Layout>
-    );
+    )
   }
 }
 
