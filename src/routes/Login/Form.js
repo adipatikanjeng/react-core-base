@@ -1,6 +1,7 @@
 import React from 'react'
 import {Form, Icon, Input, Button, Checkbox, Spin} from 'antd'
 import { connect } from 'react-redux'
+import { Link } from 'react-router-dom'
 import {login} from './../../actions/login'
 const FormItem = Form.Item
 
@@ -94,7 +95,7 @@ class NormalLoginForm extends React.Component {
             }}>
             <Icon type='google' />Google
         </Button>
-        Or <a href='/register'>register now!</a>
+        Or <Link to='/register'>register now!</Link>
         </FormItem>
       </Form>
     )

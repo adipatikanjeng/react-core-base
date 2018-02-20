@@ -15,25 +15,25 @@ class LeftSide extends React.Component {
   static contextTypes = {
     router: PropTypes.object
   }
-  
-  componentWillReceiveProps() {      
-    let pathname = this.context.router.location.pathname
-    const keys = pathname !== '/' ? [pathname.replace(/\//g,'')] : ['/'] 
-    this.setState({ 
+
+  componentWillReceiveProps() {
+    let pathname = this.context.router.route.location.pathname
+    const keys = pathname !== '/' ? [pathname.replace(/\//g,'')] : ['/']
+    this.setState({
       selectedKeys: keys,
       collapsed: this.props.collapsed
     });
   }
 
-  componentDidMount() {    
-    let pathname = this.context.router.location.pathname
-    const keys = pathname !== '/' ? [pathname.replace(/\//g,'')] : ['/'] 
+  componentDidMount() {
+    let pathname = this.context.router.route.location.pathname
+    const keys = pathname !== '/' ? [pathname.replace(/\//g,'')] : ['/']
     this.setState({ selectedKeys: keys });
   }
 
   render() {
     const { linkTo, collapsed, onCollapse} = this.props
-    return (     
+    return (
         <Sider
           trigger={null}
           collapsible
@@ -48,7 +48,7 @@ class LeftSide extends React.Component {
             defaultSelectedKeys={['/']}
             onClick={linkTo}
             selectedKeys={this.state.selectedKeys}
-            >            
+            >
             <Menu.Item key="/">
               <Icon type="home"/>
               <span>Home</span>
@@ -56,10 +56,10 @@ class LeftSide extends React.Component {
             <Menu.Item key="login">
               <Icon type="login"/>
               <span>Login</span>
-            </Menu.Item>            
+            </Menu.Item>
           </Menu>
         </Sider>
-             
+
     );
   }
 }

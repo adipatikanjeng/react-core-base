@@ -1,6 +1,5 @@
-import {
-  browserHistory
-} from 'react-router'
+import { createHashHistory } from 'history'
+const history = createHashHistory()
 const SET_REGISTER_PENDING = 'SET_REGISTER_PENDING'
 const SET_REGISTER_SUCCESS = 'SET_REGISTER_SUCCESS'
 const SET_REGISTER_ERROR = 'SET_REGISTER_ERROR'
@@ -45,8 +44,8 @@ function setRegisterError (RegisterError) {
 function callRegisterApi (data, callback) {
   setTimeout(() => {
     if (data) {
-      console.log(data)
-      browserHistory.replace('/')
+
+      history.push('/')
       return callback(null)
     } else {
       return callback(new Error('Invalid email and password'))

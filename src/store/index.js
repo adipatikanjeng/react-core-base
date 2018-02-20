@@ -4,5 +4,4 @@ import logger from 'redux-logger'
 import reducer from './../reducers'
 
 const store = createStore(reducer, {}, applyMiddleware(thunk, logger))
-console.log(store.getState())
 export default store

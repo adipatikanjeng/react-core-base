@@ -5,8 +5,10 @@ import './BasicLayout.less'
 import './header.less'
 import LeftSide from './../components/LeftSide'
 import GlobalHeader from './../components/GlobalHeader'
-import {browserHistory} from 'react-router'
 import axios from 'axios'
+import { Switch, BrowserRouter, Link } from 'react-router-dom';
+import { createHashHistory } from 'history'
+const history = createHashHistory()
 const {Content, Footer} = Layout
 
 class BasicLayout extends React.Component {
@@ -28,13 +30,13 @@ class BasicLayout extends React.Component {
     this.setState({collapsed});
   }
 
-  toggle = () => {    
+  toggle = () => {
     this.setState({
       collapsed: !this.state.collapsed
     });
   }
 
-  componentDidMount () {   
+  componentDidMount () {
     let here = this
     axios.get('https://core-app-project.firebaseio.com/users/heriyadi.json', {
       // params: {
@@ -52,13 +54,15 @@ class BasicLayout extends React.Component {
   }
 
   linkTo (item) {
-    browserHistory.push(item.key)
+    history.push(item.key)
+    // this.props.history.push(item.key)
+    console.log(item)
   }
 
   render () {
     document.title = this.props.title + ' | Core App'
-    const {children, title} = this.props    
-    
+    const {children, title} = this.props
+
     return (
       <Layout>
         <LeftSide
@@ -88,7 +92,7 @@ class BasicLayout extends React.Component {
           <Footer style={{
             textAlign: 'center'
           }}>
-            App Core ©2016 Created with Love
+            App Core ©2018 Created with Love
           </Footer>
         </Layout>
       </Layout>

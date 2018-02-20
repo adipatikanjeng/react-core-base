@@ -1,6 +1,5 @@
-import {
-  browserHistory
-} from 'react-router'
+import { createHashHistory } from 'history'
+const history = createHashHistory()
 const SET_LOGIN_PENDING = 'SET_LOGIN_PENDING'
 const SET_LOGIN_SUCCESS = 'SET_LOGIN_SUCCESS'
 const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'
@@ -45,7 +44,7 @@ function setLoginError (loginError) {
 function callLoginApi (email, password, remember, callback) {
   setTimeout(() => {
     if (email === 'heriyadi@kudo.co.id' && password === '12345678') {
-      browserHistory.replace('/')
+      history.push('/')
       return callback(null)
     } else {
       return callback(new Error('Invalid email and password'))
